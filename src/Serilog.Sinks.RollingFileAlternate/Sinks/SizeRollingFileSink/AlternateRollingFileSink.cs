@@ -119,11 +119,12 @@ namespace Serilog.Sinks.RollingFileAlternate.Sinks.SizeRollingFileSink
             }
         }
 
-        private void ApplyRetentionPolicy()
+        public void ApplyRetentionPolicy()
         {
             if (retainedFileCountLimit == null) return;
 
-            var newestFirst = Directory.GetFiles(this.logDirectory)
+            // Gets files 
+            var newestFirst = Directory.GetFiles(this.logDirectory, $"{this.logFilePrefix}*")
                 .Select(m => new FileInfo(m))
                 .OrderByDescending(m => m.CreationTime)
                 .Select(m => m.Name);
