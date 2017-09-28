@@ -119,11 +119,11 @@ namespace Serilog.Sinks.RollingFileAlternate.Sinks.SizeRollingFileSink
             }
         }
 
-        public void ApplyRetentionPolicy()
+        private void ApplyRetentionPolicy()
         {
             if (retainedFileCountLimit == null) return;
 
-            // Gets files 
+            // Gets files to apply retention policy TAKING into consideration the log file prefix
             var newestFirst = Directory.GetFiles(this.logDirectory, $"{this.logFilePrefix}*")
                 .Select(m => new FileInfo(m))
                 .OrderByDescending(m => m.CreationTime)
