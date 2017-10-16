@@ -123,7 +123,8 @@ namespace Serilog.Sinks.RollingFileAlternate.Sinks.SizeRollingFileSink
         {
             if (retainedFileCountLimit == null) return;
 
-            var newestFirst = Directory.GetFiles(this.logDirectory)
+            // Gets files to apply retention policy TAKING into consideration the log file prefix
+            var newestFirst = Directory.GetFiles(this.logDirectory, $"{this.logFilePrefix}*")
                 .Select(m => new FileInfo(m))
                 .OrderByDescending(m => m.CreationTime)
                 .Select(m => m.Name);
